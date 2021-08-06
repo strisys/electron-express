@@ -1,6 +1,6 @@
 {
   "name": "electron-express",
-  "version": "1.0.0",
+  "version": "0.0.0-beta.1",
   "description": "Sample electron application with an Express server embedded.  The idea is to distribute a full web application as one package that can be later be run as a conventional web application.",
   "main": "dist/client/desktop/entry-point.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "express",
     "express embedded"
   ],
-  "author": "Stephen Trudel (electron-embedded-express@stephentrudel.com)",
+  "author": "Stephen Trudel (electron-express@stephentrudel.com)",
   "license": "ISC",
   "devDependencies": {
     "copyfiles": "^2.4.1",
@@ -46,7 +46,6 @@
     "electron-log": "^4.4.1",
     "electron-window": "^0.8.1",
     "express": "^4.17.1",
-    "materialize-css": "^1.0.0",
-    "tslib": "^2.3.0"
+    "materialize-css": "^1.0.0"
   }
 }
