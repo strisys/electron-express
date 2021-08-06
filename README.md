@@ -1,10 +1,14 @@
-# Electron/Express
+# Electron with Express Embedded (Proof-of-Concept)
 
 ### Overview
 
-Sample electron application with an Express server embedded.  The idea is to distribute a full web application as one package that can be later be run as a conventional web application with the server in a separate process.
+This is a very simple proof-of-concept Electron application with an Express server embedded.  The idea is to distribute a full web application (i.e. server and client) as one package that can be later be run as a conventional web application with the server in a separate process.
 
-To run execute the following
+To run the application execute the following
 
 	npm install
 	npm start
+
+There is also support to build installation executable using [Electron Builder](https://www.electron.build/).  The distribution executable is under `dist/electron/installer/win64`.
+
+	npm run build-packaged
