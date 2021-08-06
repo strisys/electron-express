@@ -1,13 +1,13 @@
 import { app } from 'electron';
 import { createLogger } from './util/logger';
+import { start } from './util/hot-reload';
 import { init as initDesktop } from './views/shell/main';
-import { init as initServer } from './views/server-init/main';
 
 const logger = createLogger('entry-point');
+start();
 
 const initialize = () => {
   logger.info('ready: starting application ...');
-  // initServer();
   initDesktop();
 }
 

@@ -68,6 +68,7 @@
     "electron-ipc-bridge-factory": "^0.0.0-beta.3",
     "electron-is": "^3.0.0",
     "electron-log": "^4.4.1",
+    "electron-reload": "^2.0.0-alpha.1",
     "electron-window": "^0.8.1",
     "express": "^4.17.1",
     "materialize-css": "^1.0.0"
