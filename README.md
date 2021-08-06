@@ -9,6 +9,8 @@ To run the application execute the following
 	npm install
 	npm start
 
-There is also support to build an installation executable using [Electron Builder](https://www.electron.build/).  The distribution executable is under `dist/electron/installer/win64`.
+There is also support to build an installation executable using [Electron Builder](https://www.electron.build/).  
 
 	npm run build-packaged
+
+The resulting installation executable can be found in `<project-root>/dist/electron/installer/win64`.
