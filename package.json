@@ -2,6 +2,13 @@
   "name": "electron-express",
   "version": "0.0.0-beta.1",
   "description": "Sample electron application with an Express server embedded.  The idea is to distribute a full web application as one package that can be later be run as a conventional web application.",
+  "keywords": [
+    "electron",
+    "express",
+    "express embedded"
+  ],
+  "author": "Stephen Trudel (electron-express@stephentrudel.com)",
+  "license": "ISC",
   "main": "dist/client/desktop/entry-point.js",
   "scripts": {
     "postinstall": "npm-run-all transpile",
@@ -21,17 +28,33 @@
     "start-client-web": "start ./dist/client/web/static/index.html",
     "start-client-desktop": "electron .",
     "start": "npm-run-all build-unpackaged start-client-desktop",
-    "test": "npm test"
+    "eb-build-installer-win64": "electron-builder build --win --x64 --publish never",
+    "build-installer-win64": "npm-run-all --sequential build-unpackaged eb-build-installer-win64",
+    "build-packaged": "npm-run-all build-installer-win64"
   },
-  "keywords": [
-    "electron",
-    "express",
-    "express embedded"
-  ],
-  "author": "Stephen Trudel (electron-express@stephentrudel.com)",
-  "license": "ISC",
+  "build": {
+    "appId": "Electron.Express",
+    "productName": "Electron Express",
+    "directories": {
+      "output": "dist/electron/installer/win64"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "src/ts/client/web/static/img/app-icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "installerIcon": "src/ts/client/web/static/img/app-icon.ico",
+      "uninstallerIcon": "src/ts/client/web/static/img/app-icon.ico",
+      "oneClick": true,
+      "deleteAppDataOnUninstall": true
+    }
+  },
   "devDependencies": {
     "copyfiles": "^2.4.1",
+    "electron": "^13.1.8",
     "electron-builder": "^22.11.7",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
@@ -40,7 +63,6 @@
   },
   "dependencies": {
     "date-fns": "^2.23.0",
-    "electron": "^13.1.8",
     "electron-ipc-bridge-factory": "^0.0.0-beta.3",
     "electron-is": "^3.0.0",
     "electron-log": "^4.4.1",
