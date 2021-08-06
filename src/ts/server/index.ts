@@ -1,13 +1,13 @@
 import express from 'express';
+import { Counter } from './features/poc/counter';
 
 const app = express();
 const port = 3000;
-let count = 0;
+
+let counter = new Counter();
 
 app.get('/', (_, res) => {
-  res.jsonp({ 
-    count: ++count
-  });
+  res.jsonp(counter.getNext());
 });
 
 app.listen(port, () => {
