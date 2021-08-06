@@ -1,0 +1,52 @@
+{
+  "name": "electron-express",
+  "version": "1.0.0",
+  "description": "Sample electron application with an Express server embedded.  The idea is to distribute a full web application as one package that can be later be run as a conventional web application.",
+  "main": "dist/client/desktop/entry-point.js",
+  "scripts": {
+    "postinstall": "npm-run-all transpile",
+    "clean-dist-web": "rimraf ./dist/web/js",
+    "clean-dist-electron": "rimraf ./dist/electron",
+    "clean-dist-all": "rimraf ./dist",
+    "clean-src-all": "rimraf ./src/js",
+    "copy-client-markup": "copyfiles -u 2 ./src/ts/client/web/static/**/*.* ./src/ts/client/desktop/**/*.html src/js",
+    "copy-client-all": "copyfiles -u 2 ./src/js/client/**/* ./dist",
+    "copy-server-all": "copyfiles -u 2 ./src/js/server/**/* ./dist",
+    "tsc-version": "tsc --version",
+    "tsc": "tsc",
+    "transpile": "npm-run-all --sequential clean-src-all tsc-version tsc",
+    "stage-client": "npm-run-all transpile copy-client-markup",
+    "build-unpackaged": "npm-run-all clean-dist-all stage-client copy-client-all copy-server-all clean-src-all",
+    "start-server": "start node ./dist/server/index.js",
+    "start-client-web": "start ./dist/client/web/static/index.html",
+    "start-client-desktop": "electron .",
+    "start": "npm-run-all build-unpackaged start-client-desktop",
+    "test": "npm test"
+  },
+  "keywords": [
+    "electron",
+    "express",
+    "express embedded"
+  ],
+  "author": "Stephen Trudel (electron-embedded-express@stephentrudel.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "electron-builder": "^22.11.7",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "date-fns": "^2.23.0",
+    "electron": "^13.1.8",
+    "electron-ipc-bridge-factory": "^0.0.0-beta.3",
+    "electron-is": "^3.0.0",
+    "electron-log": "^4.4.1",
+    "electron-window": "^0.8.1",
+    "express": "^4.17.1",
+    "materialize-css": "^1.0.0",
+    "tslib": "^2.3.0"
+  }
+}
