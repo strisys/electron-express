@@ -1,6 +1,9 @@
 import express from 'express';
+// import debug from 'debug';
 import { Counter } from './features/poc/counter';
+import { getLogger } from './util/debug';
 
+const loggerFn = getLogger('server');
 const app = express();
 const port = 3000;
 
@@ -11,7 +14,7 @@ app.get('/', (_, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+  loggerFn(`App listening at http://localhost:${port}`);
 });
 
 export {};
