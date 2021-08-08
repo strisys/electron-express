@@ -1,4 +1,5 @@
 import { app, ipcMain } from 'electron';
+import cp from 'child_process';
 import windowFactory from 'electron-window';
 import { createLogger } from '../../util/logger';
 import path from 'path';
@@ -44,7 +45,8 @@ function createMainWindow () {
 }
 
 const runServer = () => {
-  require('../../../../server/index');
+  cp.fork('./dist/server/index');
+  // require('../../../../server/index');
 }
 
 export const init = (): void => { 
