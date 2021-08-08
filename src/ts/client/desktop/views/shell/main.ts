@@ -44,13 +44,13 @@ function createMainWindow () {
   return mainWindow;
 }
 
-const runServer = () => {
+const runExpress = () => {
   cp.fork('./dist/server/index');
   // require('../../../../server/index');
 }
 
 export const init = (): void => { 
-  runServer();
+  runExpress();
   createMainWindow();
 }
 
