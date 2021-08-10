@@ -6,13 +6,14 @@ import path from 'path';
 import is from 'electron-is';
 
 const logger = createLogger('shell');
+const isDev = (is.dev() || true);
 
 function createMainWindow () {
   const options = {
     width: 1000,
     height: 800,
     webPreferences: {
-      devTools: is.dev(),
+      devTools: isDev,
       contextIsolation: false,
       // preload: path.join(__dirname, 'bridge.js')
     }
@@ -34,7 +35,7 @@ function createMainWindow () {
   });
 
   // https://www.electronjs.org/docs/api/web-contents#contentsopendevtoolsoptions
-  if (is.dev()) {
+  if (isDev) {
     mainWindow.webContents.openDevTools({
       mode: 'bottom',
       activate: true
@@ -45,7 +46,22 @@ function createMainWindow () {
 }
 
 const runExpress = () => {
-  cp.fork('./dist/server/index');
+  try {
+    const modulePath = ((is.dev()) ? './dist/server/index' : '../../../../server/index');
+    logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, dir:=${__dirname}, path:=${modulePath}]`);
+    
+    // https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options
+    const child = cp.fork(modulePath);
+
+    child.send('are you awake?');
+    child.on('message', (msg) => { 
+      logger.info(`IPC message from server [${msg}]`);
+    })
+  }
+  catch (ex) {
+    logger.error(`Failed to start embedded web server.  ${JSON.stringify(ex)}`);
+  }
+  
   // require('../../../../server/index');
 }
 

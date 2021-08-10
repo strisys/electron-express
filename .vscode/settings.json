@@ -20,7 +20,7 @@
     "src/ts/ui/web/static/tile-wide.png": true,
     "src/ts/ui/web/static/tile.png": true,
     "logs": true,
-    "docs": true,
+    "docs": false,
     "dist": false,
     "dist/.well-known": true,
     "dist/img": false,
