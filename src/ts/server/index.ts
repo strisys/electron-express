@@ -6,25 +6,28 @@ import { getLogger } from './util/debug';
 
 const loggerFn = getLogger('server');
 const app = express();
-const port = 3001;
+const configuredPort = 0;
+let actualPort = configuredPort;
 
-let counter = new Counter();
+const counter = new Counter();
 
 app.get('/count', (req: Request, res) => {
   process.send(`processing request ... [path:=${req.path}]`);
   res.jsonp(counter.getNext());
 });
 
-app.listen(port, () => {
-  loggerFn(`App listening at http://localhost:${port}`);
-});
-
 // http://expressjs.com/en/starter/static-files.html
 const staticPath = path.join(__dirname, '../client/web/static');
 app.use(express.static(staticPath));
 
+const server = app.listen(configuredPort, () => {
+  actualPort = server.address()['port'];
+  loggerFn(`App listening at http://localhost:${actualPort}`);
+});
+
 process.on('message', (val) => {
   loggerFn(`IPC message from parent process: [${val}]`);
+  process.send({ port: actualPort });
 })
 
 export {};
