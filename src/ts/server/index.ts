@@ -6,19 +6,21 @@ import { getLogger } from './util/debug';
 
 const loggerFn = getLogger('server');
 const app = express();
-const configuredPort = 0;
+const configuredPort = 3001;
 let actualPort = configuredPort;
 
 const counter = new Counter();
 
 app.get('/count', (req: Request, res) => {
-  process.send({ 
-    message: 'request-log', 
-    path: req.path,
-    query: req.query,
-    port: actualPort, 
-    pid: process.pid
-  });
+  if (process.send) {
+    process.send({ 
+      message: 'request-log', 
+      path: req.path,
+      query: req.query,
+      port: actualPort, 
+      pid: process.pid
+    });
+  }
 
   res.jsonp(counter.getNext());
 });

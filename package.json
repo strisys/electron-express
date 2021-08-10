@@ -25,9 +25,10 @@
     "stage-client": "npm-run-all transpile copy-client-markup",
     "build-unpackaged": "npm-run-all clean-dist-all stage-client copy-client-all copy-server-all clean-src-all",
     "start-server": "start node ./dist/server/index.js",
-    "start-client-web": "start ./dist/client/web/static/index.html",
+    "start-client-web": "start http://localhost:3001",
     "start-client-desktop": "set DEBUG=*,-express:* & electron .",
     "start": "npm-run-all build-unpackaged start-client-desktop",
+    "start-web": "npm-run-all build-unpackaged start-server start-client-web",
     "eb-build-installer-win64": "electron-builder build --win --x64 --publish never",
     "build-installer-win64": "npm-run-all --sequential build-unpackaged eb-build-installer-win64",
     "build-packaged": "npm-run-all build-installer-win64"
