@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron';
+import { app } from 'electron';
 import cp from 'child_process';
 import windowFactory from 'electron-window';
 import { createLogger } from '../../util/logger';
@@ -14,8 +14,7 @@ function createMainWindow () {
     height: 800,
     webPreferences: {
       devTools: isDev,
-      contextIsolation: false,
-      // preload: path.join(__dirname, 'bridge.js')
+      contextIsolation: false
     }
   };
 
@@ -72,7 +71,3 @@ export const init = (): void => {
   runExpress();
   createMainWindow();
 }
-
-// ipcMain.on('count', (data) => {
-//   logger.info(`Message received from renderer (${data})`);
-// });
