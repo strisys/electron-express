@@ -1,8 +1,8 @@
-# Electron with Express Embedded (Proof-of-Concept)
+# [Electron with Express Embedded (Proof-of-Concept)](https://github.com/strisys/electron-express)
 
 ### Overview
 
-This is a very simple proof-of-concept Electron application with an [Express.js](http://expressjs.com/) server embedded.  The idea is to distribute a full web application (i.e. server and client) as one package that can be *perhaps later* be run as a conventional web application with the server in a separate process.  This is suitable for development initiatives in corporate environments where the application likely will be released *before* the infrastructure is approved or is ready.
+This is a very simple proof-of-concept Electron application with an [Express.js](http://expressjs.com/) server embedded.  The idea is to distribute a full web application (i.e. server and client) as one package that can be *perhaps later* be run as a conventional web application with the HTTP server in a separate process.  This is suitable for development initiatives where the web application likely will be released *before* the infrastructure is approved or ready.
 
 To run the application execute the following
 
