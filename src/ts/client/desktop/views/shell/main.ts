@@ -47,8 +47,9 @@ function createMainWindow () {
 
 const runExpress = () => {
   try {
-    const modulePath = ((is.dev()) ? './dist/server/index' : '../../../../server/index');
-    logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, dir:=${__dirname}, path:=${modulePath}]`);
+    const releasePath = path.join(__dirname, '../../../../', 'server', 'index');
+    const modulePath = ((is.dev()) ? './dist/server/index' : releasePath);
+    logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, path:=${modulePath}, dir:=${__dirname}]`);
     
     // https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options
     const child = cp.fork(modulePath);
