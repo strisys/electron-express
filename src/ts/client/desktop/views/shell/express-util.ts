@@ -3,17 +3,17 @@ import { createLogger } from '../../util/logger';
 const logger = createLogger('shell');
 import path from 'path';
 import is from 'electron-is';
-let port = 3001;
 
 export class ExpressServerStarterService {
-  public start = async (useFork = true) => {
+  public start = async (useFork = true): Promise<string> => {
     if (!useFork) {
       return require('../../../../server/index');
     }
   
     const startChildProcess = (resolve, reject) => {
       let resolved = false;
-  
+      let port = 3001;
+
       try {
         const releasePath = path.join(__dirname, '../../../../', 'server', 'index');
         const modulePath = ((is.dev()) ? './dist/server/index' : releasePath);
@@ -29,14 +29,16 @@ export class ExpressServerStarterService {
             logger.info(`Embedded port number reply: ${msg.port}`);
             port = msg.port;
             resolved = true;
-            resolve();
+            resolve(port);
           }
     
           logger.info(`IPC message from server [${JSON.stringify(msg)}]`);
         });
   
         if (!resolved) {
-          setTimeout(resolve, 5000);
+          setTimeout(() => {
+            resolve(port);
+          }, 5000);
         }
       }
       catch (ex) {

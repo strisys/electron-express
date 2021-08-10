@@ -4,10 +4,11 @@ import windowFactory from 'electron-window';
 import { createLogger } from '../../util/logger';
 import path from 'path';
 import is from 'electron-is';
+import { ExpressServerStarterService } from './express-util';
 
 const logger = createLogger('shell');
 const showDevTools = (is.dev() || true);
-let port = 3001;
+let port = '3001';
 
 function createMainWindow (useWeb = true) {
   const options = {
@@ -47,45 +48,49 @@ function createMainWindow (useWeb = true) {
 }
 
 const runExpress = async (useFork = true) => {
-  if (!useFork) {
-    return require('../../../../server/index');
-  }
+  // const service: ExpressServerStarterService = new ExpressServerStarterService();
+  port = (await (new ExpressServerStarterService()).start());
 
-  const startChildProcess = (resolve, reject) => {
-    let resolved = false;
 
-    try {
-      const releasePath = path.join(__dirname, '../../../../', 'server', 'index');
-      const modulePath = ((is.dev()) ? './dist/server/index' : releasePath);
-      logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, path:=${modulePath}, dir:=${__dirname}]`);
+  // if (!useFork) {
+  //   return require('../../../../server/index');
+  // }
+
+  // const startChildProcess = (resolve, reject) => {
+  //   let resolved = false;
+
+  //   try {
+  //     const releasePath = path.join(__dirname, '../../../../', 'server', 'index');
+  //     const modulePath = ((is.dev()) ? './dist/server/index' : releasePath);
+  //     logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, path:=${modulePath}, dir:=${__dirname}]`);
       
-      // https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options
-      const child = cp.fork(modulePath);
+  //     // https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options
+  //     const child = cp.fork(modulePath);
   
-      child.send('port');
+  //     child.send('port');
   
-      child.on('message', (msg: any) => { 
-        if (msg.port) {
-          logger.info(`Embedded port number reply: ${msg.port}`);
-          port = msg.port;
-          resolved = true;
-          resolve();
-        }
+  //     child.on('message', (msg: any) => { 
+  //       if (msg.port) {
+  //         logger.info(`Embedded port number reply: ${msg.port}`);
+  //         port = msg.port;
+  //         resolved = true;
+  //         resolve();
+  //       }
   
-        logger.info(`IPC message from server [${JSON.stringify(msg)}]`);
-      });
+  //       logger.info(`IPC message from server [${JSON.stringify(msg)}]`);
+  //     });
 
-      if (!resolved) {
-        setTimeout(resolve, 5000);
-      }
-    }
-    catch (ex) {
-      logger.error(`Failed to start embedded web server.  ${JSON.stringify(ex)}`);
-      reject();
-    }
-  }
+  //     if (!resolved) {
+  //       setTimeout(resolve, 5000);
+  //     }
+  //   }
+  //   catch (ex) {
+  //     logger.error(`Failed to start embedded web server.  ${JSON.stringify(ex)}`);
+  //     reject();
+  //   }
+  // }
 
-  return (new Promise(startChildProcess));
+  // return (new Promise(startChildProcess));
 }
 
 export const init = async (): Promise<void> => { 
