@@ -1,5 +1,3 @@
-  
-
 const countElem = document.getElementById('count');
 const btnElem = document.getElementById('btn');
 

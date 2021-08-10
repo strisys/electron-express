@@ -1,48 +1,61 @@
 import cp from 'child_process';
 import { createLogger } from '../../util/logger';
-const logger = createLogger('shell');
 import path from 'path';
 import is from 'electron-is';
 
+const logger = createLogger('express-util');
+
 export class ExpressServerStarterService {
-  public start = async (useFork = true): Promise<string> => {
+  private get serverPath(): string {
+    const releasePath = path.join(__dirname, '../../../../', 'server', 'index');
+    return ((is.dev()) ? './dist/server/index' : releasePath);
+  }
+
+  public invoke = async (useFork = true): Promise<string> => {
     if (!useFork) {
       return require('../../../../server/index');
     }
   
     const startChildProcess = (resolve, reject) => {
-      let resolved = false;
+      let isDone = false;
       let port = 3001;
 
       try {
-        const releasePath = path.join(__dirname, '../../../../', 'server', 'index');
-        const modulePath = ((is.dev()) ? './dist/server/index' : releasePath);
-        logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, path:=${modulePath}, dir:=${__dirname}]`);
+        logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, path:=${this.serverPath}, dir:=${__dirname}]`);
         
         // https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options
-        const child = cp.fork(modulePath);
+        const child = cp.fork(this.serverPath);
     
         child.send('port');
     
-        child.on('message', (msg: any) => { 
+        const trySetPort = (msg: any) => {
+          if (isDone) {
+            return;
+          }
+
           if (msg.port) {
-            logger.info(`Embedded port number reply: ${msg.port}`);
             port = msg.port;
-            resolved = true;
+
+            logger.error(`Embedded HTTP server started successfully listening on port '${port}'}`);
+            isDone = true;
             resolve(port);
           }
     
           logger.info(`IPC message from server [${JSON.stringify(msg)}]`);
-        });
-  
-        if (!resolved) {
-          setTimeout(() => {
-            resolve(port);
-          }, 5000);
         }
+
+        // Use IPC to get port number 
+        child.on('message', trySetPort);
+  
+        setTimeout(() => {
+          if (!isDone) {
+            resolve(port);
+          }
+        }, 5000);
       }
       catch (ex) {
-        logger.error(`Failed to start embedded web server.  ${JSON.stringify(ex)}`);
+        logger.error(`Failed to start embedded HTTP server.  ${JSON.stringify(ex)}`);
+        isDone = true;
         reject();
       }
     }
