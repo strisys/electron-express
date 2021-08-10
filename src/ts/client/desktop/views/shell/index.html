@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' http://localhost:3000 http://localhost:3001; connect-src http://localhost:3000 http://localhost:3001; img-src 'self'; child-src 'none'; script-src 'self' 'unsafe-inline' localhost; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' http://localhost:*; connect-src http://localhost:*; img-src 'self'; child-src 'none'; script-src 'self' 'unsafe-inline' localhost; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com;">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../../../../../node_modules/materialize-css/dist/css/materialize.min.css" rel="stylesheet" media="screen,projection">
   <title>Electron with Embedded Express Sample</title>
@@ -17,6 +17,7 @@
    </style>
 </head>
 <body>
+  <h3>Electron Page Counter</h3>
   <h4 id="count">0</h4>
   <button id="btn">+</button>
   <script >var exports = {};</script>

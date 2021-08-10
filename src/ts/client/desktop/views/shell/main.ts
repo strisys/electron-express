@@ -8,7 +8,7 @@ import is from 'electron-is';
 const logger = createLogger('shell');
 const showDevTools = (is.dev() || true);
 
-function createMainWindow () {
+function createMainWindow (useWeb = true) {
   const options = {
     width: 1000,
     height: 800,
@@ -21,7 +21,7 @@ function createMainWindow () {
   const mainWindow = windowFactory.createWindow(options);
   mainWindow.title = `Electron-Express v.${app.getVersion()}`;
 
-  const markupPath = path.resolve(__dirname, 'index.html');
+  const markupPath = ((useWeb) ? 'http://localhost:3001' : path.resolve(__dirname, 'index.html'))
 
   mainWindow.showUrl(markupPath, null, () => {
     const appInfo = {
