@@ -1,4 +1,4 @@
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import cp from 'child_process';
 import windowFactory from 'electron-window';
 import { createLogger } from '../../util/logger';
@@ -6,14 +6,14 @@ import path from 'path';
 import is from 'electron-is';
 
 const logger = createLogger('shell');
-const isDev = (is.dev() || true);
+const showDevTools = (is.dev() || true);
 
 function createMainWindow () {
   const options = {
     width: 1000,
     height: 800,
     webPreferences: {
-      devTools: isDev,
+      devTools: showDevTools,
       contextIsolation: false
     }
   };
@@ -34,7 +34,7 @@ function createMainWindow () {
   });
 
   // https://www.electronjs.org/docs/api/web-contents#contentsopendevtoolsoptions
-  if (isDev) {
+  if (showDevTools) {
     mainWindow.webContents.openDevTools({
       mode: 'bottom',
       activate: true
