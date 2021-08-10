@@ -10,3 +10,4 @@ const increment = async () => {
 }
 
 btnElem.addEventListener('click', increment);
+export {};

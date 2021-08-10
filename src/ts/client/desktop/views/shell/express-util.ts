@@ -21,7 +21,7 @@ export class ExpressServerStarterService {
       let port = 3001;
 
       try {
-        logger.info(`Attempting to start embedded web server ... [isdev: ${is.dev()}, path:=${this.serverPath}, dir:=${__dirname}]`);
+        logger.info(`Attempting to start embedded HTTP server ... [isdev: ${is.dev()}, path:=${this.serverPath}, dir:=${__dirname}]`);
         
         // https://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options
         const child = cp.fork(this.serverPath);
@@ -29,6 +29,8 @@ export class ExpressServerStarterService {
         child.send('port');
     
         const trySetPort = (msg: any) => {
+          logger.info(`IPC message from server [${JSON.stringify(msg)}]`);
+
           if (isDone) {
             return;
           }
@@ -36,12 +38,10 @@ export class ExpressServerStarterService {
           if (msg.port) {
             port = msg.port;
 
-            logger.error(`Embedded HTTP server started successfully listening on port '${port}'}`);
+            logger.error(`Embedded HTTP server started successfully and listening on port '${port}'}`);
             isDone = true;
             resolve(port);
           }
-    
-          logger.info(`IPC message from server [${JSON.stringify(msg)}]`);
         }
 
         // Use IPC to get port number 

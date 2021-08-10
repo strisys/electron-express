@@ -12,7 +12,14 @@ let actualPort = configuredPort;
 const counter = new Counter();
 
 app.get('/count', (req: Request, res) => {
-  process.send(`processing request ... [path:=${req.path}]`);
+  process.send({ 
+    message: 'request-log', 
+    path: req.path,
+    query: req.query,
+    port: actualPort, 
+    pid: process.pid
+  });
+
   res.jsonp(counter.getNext());
 });
 
