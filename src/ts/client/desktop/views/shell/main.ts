@@ -45,7 +45,11 @@ function createMainWindow () {
   return mainWindow;
 }
 
-const runExpress = () => {
+const runExpress = (useFork = true) => {
+  if (!useFork) {
+    return require('../../../../server/index');
+  }
+
   try {
     const releasePath = path.join(__dirname, '../../../../', 'server', 'index');
     const modulePath = ((is.dev()) ? './dist/server/index' : releasePath);
@@ -62,8 +66,6 @@ const runExpress = () => {
   catch (ex) {
     logger.error(`Failed to start embedded web server.  ${JSON.stringify(ex)}`);
   }
-  
-  // require('../../../../server/index');
 }
 
 export const init = (): void => { 
